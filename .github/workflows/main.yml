@@ -77,6 +77,7 @@ jobs:
         test "$(git -C "$AC79_SDK" rev-parse HEAD)" = d179b4484759423312073f5fbb232501aa491047
         version=$(python3 tools/fm1_recover.py --version | awk '{print $NF}')
         if [[ "$GITHUB_REF" == refs/tags/* ]]; then test "$GITHUB_REF_NAME" = "v$version"; fi
+        chmod +x ./build.sh
         ./build.sh --release "$version"
         cp "build/melodee-$version.fwsc" build/melodee.fwsc
         mkdir -p build/release-assets
@@ -133,6 +134,7 @@ jobs:
           path: build/recovery/${{ matrix.target }}/*.zip
 
   publish:
+    if: false # G-: ignore it
     needs: [firmware, recovery]
     runs-on: ubuntu-22.04
     permissions:
